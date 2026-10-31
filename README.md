@@ -84,6 +84,14 @@ The pipeline starts from 9 tables in a PostgreSQL database hosted on Neon. They 
     <td align="center"><b>Ingestion tasks.</b> One <code>extract_load</code> task per source table.</td>
     <td align="center"><b>Asset event.</b> The 2 failed runs were from setup, before the key and IAM roles were in place. Triggerer is red because this stack does not deploy one.</td>
   </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/airflow/hourly_schedule_success.jpg" alt="Hourly schedule with successful latest runs"></td>
+    <td width="50%"><img src="docs/images/airflow/scheduled_runs_success.jpg" alt="Scheduled and asset-triggered DAG runs"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Hourly schedule.</b> <code>0 * * * *</code> ran at 23:00 WIB and <code>media_dbt</code> followed at 23:00:47. The next run is at 00:00.</td>
+    <td align="center"><b>Scheduled runs.</b> The 20:00 to 23:00 WIB runs succeeded, and <code>media_dbt</code> followed on the Asset. The two failed runs at the bottom are from setup.</td>
+  </tr>
 </table>
 
 Every step of the run passed:
