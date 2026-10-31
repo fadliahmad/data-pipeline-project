@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: "{{ env_var('BQ_DATASET_BRONZE') }}"
+    description: >
+      Loaded by pipeline/extract_load.py, not by dbt. Incremental tables are
+      append-only change logs. Snapshot tables are replaced on every run.
+    tables:
+      - name: articles
+      - name: authors
+      - name: users
+      - name: comments
+      - name: page_views
+      - name: categories
+      - name: tags
+      - name: article_categories
+      - name: article_tags
+      - name: articles_source_ids
+        description: Every id currently in the source, used to detect hard deletes.

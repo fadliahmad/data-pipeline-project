@@ -1,0 +1,13 @@
+version: 2
+
+# SCD Type 2: bronze and silver only answer "what is the author now", while this
+# keeps what they were at any point, such as a move from contributor to staff.
+snapshots:
+  - name: scd_authors
+    relation: ref('std_authors')
+    config:
+      schema: "{{ env_var('BQ_DATASET_SILVER') }}"
+      unique_key: author_id
+      # Not the timestamp strategy: a soft delete leaves updated_at unchanged.
+      strategy: check
+      check_cols: [author_name, email, author_type, deleted_at]
