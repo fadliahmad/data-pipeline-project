@@ -8,6 +8,7 @@
 ![dbt](https://img.shields.io/badge/dbt_Core-1.12-FF694B?logo=dbt&logoColor=white)
 ![BigQuery](https://img.shields.io/badge/BigQuery-warehouse-4285F4?logo=googlebigquery&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql&logoColor=white)
+![Metabase](https://img.shields.io/badge/Metabase-dashboard-509EE3?logo=metabase&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 
 [Architecture](#architecture) · [Data model](#data-model) · [Walkthrough](#walkthrough) · [Setup](#setup) · [DAG flow](#dag-flow) · [Design decisions](#design-decisions)
@@ -130,6 +131,31 @@ Silver removes the duplicates found in bronze. Gold drops bot traffic from page 
 
 `cdc_article_hard_deletes` has 0 rows, so every article in silver still exists in the source.
 
+### 4. Dashboard in Metabase
+
+Metabase reads the gold tables in BigQuery. The Media Platform Dashboard has date and category filters, and three sections: traffic trends, content, and logged-in audience. The screenshots below are filtered to 2025.
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/metabase/gold_tables.jpg" alt="Gold tables in Metabase"></td>
+    <td width="50%"><img src="docs/images/metabase/collection.jpg" alt="Media Platform BQ collection in Metabase"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Gold tables.</b> Metabase connects to the gold dataset.</td>
+    <td align="center"><b>Collection.</b> The dashboard and its questions.</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/metabase/dashboard_overview.jpg" alt="Dashboard overview with traffic trends"></td>
+    <td width="50%"><img src="docs/images/metabase/dashboard_content_audience.jpg" alt="Dashboard content and audience sections"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Overview and traffic.</b> Views, sessions, comments, and published articles.</td>
+    <td align="center"><b>Content and audience.</b> Top articles, top authors, and logged-in readers.</td>
+  </tr>
+</table>
+
+The full dashboard is also available as a [PDF](docs/images/metabase/media_platform_dashboard.pdf).
+
 ## Setup
 
 You need the following from BigQuery:
@@ -156,6 +182,19 @@ Open http://localhost:8080. The username and password are `AIRFLOW_ADMIN_USERNAM
 
 > [!IMPORTANT]
 > The `media_ingestion_hourly` and `media_dbt` DAGs start paused. Unpause both once `.env` and the key are in place.
+
+### Metabase
+
+Metabase stores its own data in the Compose Postgres, in a separate `metabase` database. On a new setup, set `MB_DB_PASS` and `MB_ENCRYPTION_SECRET_KEY` in `.env`, then create the role and database with the same password:
+
+```bash
+docker compose exec postgres psql -U airflow -d airflow \
+  -c "CREATE ROLE metabase LOGIN PASSWORD 'your-mb-db-pass';" \
+  -c "CREATE DATABASE metabase OWNER metabase;"
+docker compose restart metabase
+```
+
+Open http://localhost:3000, finish the setup screen, and add BigQuery as a database with the gold dataset.
 
 ## DAG flow
 
@@ -207,7 +246,7 @@ The `GREATEST(updated_at, deleted_at)` expression has no index yet. This is fine
 │   └── dbt_dags/                  # media_dbt
 ├── pipeline/                      # Extract from Postgres, load to bronze, shared Assets
 ├── dbt/                           # Models, seeds, snapshots, tests, analyses
-├── docs/images/                   # Diagrams and screenshots
+├── docs/images/                   # Diagrams, screenshots, and the Metabase dashboard
 ├── secrets/                       # Service account key (not committed)
 ├── docker-compose.yaml
 └── Dockerfile
