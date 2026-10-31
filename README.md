@@ -245,7 +245,16 @@ The `GREATEST(updated_at, deleted_at)` expression has no index yet. This is fine
 │   ├── bigquery_ingestion_dags/   # media_ingestion_hourly
 │   └── dbt_dags/                  # media_dbt
 ├── pipeline/                      # Extract from Postgres, load to bronze, shared Assets
-├── dbt/                           # Models, seeds, snapshots, tests, analyses
+├── dbt/
+│   ├── models/
+│   │   ├── bronze/                # Source definitions for the raw tables
+│   │   ├── silver/                # std_* and cdc_* models
+│   │   └── gold/                  # dim_*, fct_*, and agg_* models
+│   ├── snapshots/                 # scd_authors
+│   ├── seeds/                     # Lookup tables
+│   ├── macros/                    # Shared SQL macros
+│   ├── tests/                     # Custom data tests
+│   └── analyses/                  # Ad hoc SQL
 ├── docs/images/                   # Diagrams, screenshots, and the Metabase dashboard
 ├── secrets/                       # Service account key (not committed)
 ├── docker-compose.yaml
