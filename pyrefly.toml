@@ -1,0 +1,3 @@
+project-includes = ["dags", "pipeline"]
+search-path = ["."]
+python-interpreter-path = ".venv/bin/python"

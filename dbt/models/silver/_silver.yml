@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: std_articles
+    columns:
+      - name: article_id
+        data_tests: [unique, not_null]
+      - name: article_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [draft, published, deleted]
+  - name: std_authors
+    columns:
+      - name: author_id
+        data_tests: [unique, not_null]
+  - name: std_users
+    columns:
+      - name: user_id
+        data_tests: [unique, not_null]
+      - name: gender
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [male, female, unknown]
+  - name: std_comments
+    columns:
+      - name: comment_id
+        data_tests: [unique, not_null]
+  - name: std_page_views
+    columns:
+      - name: page_view_key
+        data_tests: [unique, not_null]
+  - name: std_categories
+    columns:
+      - name: category_id
+        data_tests: [unique, not_null]

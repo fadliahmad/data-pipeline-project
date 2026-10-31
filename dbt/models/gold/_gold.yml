@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: dim_articles
+    columns:
+      - name: article_id
+        data_tests: [unique, not_null]
+      - name: author_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_authors')
+                field: author_key
+  - name: dim_authors
+    columns:
+      - name: author_key
+        data_tests: [unique, not_null]
+  - name: dim_users
+    columns:
+      - name: user_id
+        data_tests: [unique, not_null]
+  - name: dim_categories
+    columns:
+      - name: category_id
+        data_tests: [unique, not_null]
+  - name: fct_page_views
+    columns:
+      - name: page_view_key
+        data_tests: [not_null]
+      - name: article_id
+        data_tests:
+          # Warn only: views stay in history after an article is hard-deleted.
+          - relationships:
+              arguments:
+                to: ref('dim_articles')
+                field: article_id
+              config:
+                severity: warn
+  - name: fct_comments
+    columns:
+      - name: comment_id
+        data_tests: [unique, not_null]

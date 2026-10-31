@@ -1,0 +1,86 @@
+# Project briefs
+source/
+
+# Service account keys
+secrets/*
+!secrets/.gitkeep
+
+# Secrets & credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Test, lint & type-check caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data files (keep pipelines reproducible, don't commit raw/processed data)
+data/
+*.csv
+!dbt/seeds/*.csv
+*.tsv
+*.parquet
+*.avro
+*.orc
+*.feather
+*.db
+*.sqlite
+*.sqlite3
+*.duckdb
+*.duckdb.wal
+
+# dbt
+target/
+dbt_packages/
+.user.yml
+
+# Airflow
+airflow.db
+airflow.cfg
+webserver_config.py
+standalone_admin_password.txt
+
+# Spark
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# Logs
+logs/
+*.log
+
+# Editors & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

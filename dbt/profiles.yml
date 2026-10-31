@@ -1,0 +1,12 @@
+media:
+  target: prod
+  outputs:
+    prod:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
+      project: "{{ env_var('BQ_PROJECT_ID') }}"
+      dataset: "{{ env_var('BQ_DATASET_SILVER') }}"
+      location: "{{ env_var('BQ_LOCATION') }}"
+      threads: 4
+      job_execution_timeout_seconds: 900

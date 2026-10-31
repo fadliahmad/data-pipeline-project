@@ -1,0 +1,22 @@
+name: media
+version: "1.0.0"
+profile: media
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+
+models:
+  media:
+    silver:
+      +schema: "{{ env_var('BQ_DATASET_SILVER') }}"
+      +materialized: table
+    gold:
+      +schema: "{{ env_var('BQ_DATASET_GOLD') }}"
+      +materialized: table
+
+seeds:
+  media:
+    +schema: "{{ env_var('BQ_DATASET_SILVER') }}"

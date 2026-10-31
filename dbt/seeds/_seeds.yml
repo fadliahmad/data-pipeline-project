@@ -1,0 +1,13 @@
+version: 2
+
+seeds:
+  - name: seed_gender_mapping
+    description: Maps lowercase raw gender values to a standard value.
+    columns:
+      - name: raw_value
+        data_tests: [unique, not_null]
+  - name: seed_referrer_channels
+    description: Maps referrer hosts to a traffic channel. Add a row for a new source.
+    columns:
+      - name: referrer_host
+        data_tests: [unique, not_null]
