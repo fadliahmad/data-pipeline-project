@@ -84,3 +84,6 @@ logs/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Unredacted screenshots
+docs/images/_originals/
